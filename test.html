@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .shaizi{
+            width: 400px;
+            height: 400px;
+            background-color: #ffc107;
+            margin-bottom: 50px;
+        }
+        .dots{
+            width: 80px;
+            height: 80px;
+            border-radius: 80px;
+            background-color: #000000;
+        }
+        .box1{
+            display: flex;
+            display:-webkit-flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+        .box2{
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .box3{
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        .box3 .dots:nth-of-type(2){
+            align-self: center;
+        }
+        .box3 .dots:nth-of-type(3){
+            align-self: flex-end;
+        }
+        .box4{
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+        .box4 .dots_column{
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        .box5{
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+        .box5 .dots_column{
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        .box5 .dots_column:nth-of-type(2){
+            justify-content: center;
+        }
+        .box6{
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .box6 .dots_column{
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .shengbei_body{
+            display: flex;
+            display: -webkit-flex;
+            width: 100%;
+            height: 400px;
+        }
+        .shengbei_body .content{
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: auto;
+            background-color: red;
+        }
+        .shengbei_body .nav_left, .shengbei_body .nav_right{
+            flex-basis: 120px;
+            background-color: blue;
+        }
+        .shengbei_body .nav_left{
+            order: -1;
+        }
+    </style>
+</head>
+<body>
+<div id="myVideo" style="width: 50%; padding-top: 100%"></div>
+<div>下拉加载更多</div>
+<div class="main" style="height:700px;overflow:auto;">
+    <div class="child" style='border:1px solid red;margin-top:20px;color:grey;height:800px' ></div>
+</div>
+<input type="text" id="member_reg_email" placeholder="请填写邮箱"/>
+<input type="file" accept="application/zip,application/rar,application/msg"/>
+<div class="aa" style="width: 200px; height: 200px; margin: 0 auto;background: red;color: blue;">这是一个框框a</div>
+<div class="shaizi box1">
+    <div class="dots "></div>
+</div>
+<div class="shaizi box2">
+    <div class="dots "></div>
+    <div class="dots "></div>
+</div>
+<div class="shaizi box3">
+    <div class="dots "></div>
+    <div class="dots "></div>
+    <div class="dots "></div>
+</div>
+<div class="shaizi box4">
+    <div class="dots_column">
+        <div class="dots "></div>
+        <div class="dots "></div>
+    </div>
+    <div class="dots_column">
+        <div class="dots "></div>
+        <div class="dots "></div>
+    </div>
+</div>
+<div class="shaizi box5">
+    <div class="dots_column">
+        <div class="dots"></div>
+        <div class="dots"></div>
+    </div>
+    <div class="dots_column">
+        <div class="dots"></div>
+    </div>
+    <div class="dots_column">
+        <div class="dots"></div>
+        <div class="dots"></div>
+    </div>
+</div>
+<div class="shaizi box6">
+    <div class="dots_column">
+        <div class="dots"></div>
+        <div class="dots"></div>
+    </div>
+    <div class="dots_column">
+        <div class="dots"></div>
+        <div class="dots"></div>
+    </div>
+    <div class="dots_column">
+        <div class="dots"></div>
+        <div class="dots"></div>
+    </div>
+</div>
+<div class="shengbei_body">
+    <div class="nav_left"></div>
+    <div class="content"></div>
+    <div class="nav_right"></div>
+</div>
+<canvas id="canvas1" width="400" height="400"></canvas>
+<canvas id="canvas2" width="600" height="400">不支持</canvas>
+<div id="msg"></div>
+</body>
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/tvp.player_v2_jq.js" charset='utf-8'></script>
+    <!--<script type="text/javascript">
+    /*var video = new tvp.VideoInfo();    //初始化视频对象
+    video.setVid('x019908am6g');                //向视频对象传入视频vid ，这个是点播的时候使用
+    //video.setChannelId(直播频道id);      //向视频对象传入直播频道id ，这个是直播的时候使用
+
+    /!*点播跟直播的区别主要是：
+     1. 点播是通过video.setVid(vid); 而直播是通过video.setChannelId(cnlid); 设置直播id
+     2. 点播需要player.addParam('type','2');或者省略，因为默认播放器为点播状态;直播必须通过player.addParam('type','1');设置播放器为直播状态，。
+     *!/
+
+    var player = new tvp.Player('100px', 100);  //初始化播放器对象并设置宽、高
+    player.setCurVideo(video);                   //设置播放器初始化时加载的视频
+    player.addParam('type','2');                 //设置播放器为直播状态，1表示直播，2表示点播，默认为2
+    player.addParam("wmode","transparent");      //设置透明化，不设置时，视频为最高级，总是处于页面的最上面，此时设置z-index无效
+    player.addParam('autoplay',false);           //是否自动播放
+    player.addParam('pic','');                   //播放器默认图，当autoplay=0时有效；不传入则使用视频截图
+    player.addParam('showend',0)                 //结束时是否有广告
+    player.addParam("flashskin", "http://imgcache.qq.com/minivideo_v1/vd/res/skins/TencentPlayerMiniSkin.swf"); //flash播放器皮肤；不传入则使用默认皮肤；点播状态下可选值（注意仅限点播，直播无效）,这里是使视频窗口为小窗口
+    player.addParam("loadingswf", "http://imgcache.qq.com/minivideo_v1/vd/res/skins/web_small_loading.swf");   //加载视频时的swf动画; 不传入则使用默认样式
+    player.write("myVideo");                         //输出播放器*/
+
+
+    /*新版腾讯视频接入*/
+    var video = new tvp.VideoInfo();
+    video.setVid("x019908am6g"); //视频ID
+    var player =new tvp.Player();
+    player.create({
+                    //width和height不赋值的话，默认是100%
+        video:video,
+        modId:"myVideo", //视频输出的元素ID
+        autoplay:false,     //自动播放
+        pic:"img/video.jpg" //视频预览图
+    });
+
+
+        //加载更多
+    //监听scroll事件，获取分页数据
+    $(window).on('scroll',getMoreOrder);
+
+    /**
+     * 获取更多订单
+     * @param that  “查看更多订单”按钮对象
+     */
+    function getMoreOrder(){
+        console.log($('body').scrollTop());
+        console.log($(window).height());
+        console.log($('body').scrollTop()+$(window).height());
+        console.log($(document).height());
+        //if(reqData.pageToken){
+            if ($('body').scrollTop() + $(window).height() >= $(document).height()) {
+                //$(window).off('scroll',getMoreOrder);
+                //console.log(reqData);
+                console.log("加载更多");
+                /*travo.ajax({
+                    url: url,
+                    data: reqData,
+                    type:"get",
+                    timeout: 10000,
+                    beforeSend: function(){
+
+                    },
+                    success:function(data){
+                        if(data && data.ok===0 && data.obj.list && data.obj.list.length>0 ){
+                            //var $readMore = $('#readMore');
+                            var html = travo.template('order-info-list', data.obj);
+                            $('.all-orderWrapper').append(html);
+                            reqData.pageToken = data.obj.pageToken;
+                            $window.on('scroll',getMoreOrder);
+                        }else{
+                            reqData.pageToken = "";
+                            $('.loadAll').show();
+                        }
+                        loading = false;
+                    },
+                    error:function(e){
+                        alert("请重试！");
+                        $window.on('scroll',getMoreOrder);
+                    }
+                });*/
+            }
+        //}
+    }
+    /*$(document).ready(function(){
+        $(".main").unbind("scroll").bind("scroll", function(e){
+            var sum = this.scrollHeight;
+            console.log(sum);
+            console.log($(this).scrollTop());
+            console.log($(this).height());
+            if (sum <= $(this).scrollTop() + $(this).height()) {
+                $(".main").append($(".child").clone());
+            }
+        });
+    });*/
+    //加载更多
+    //监听scroll事件，获取分页数据
+    $(window).on('scroll',getMoreOrder);
+
+    /**
+     * 获取更多订单
+     * @param that  “查看更多订单”按钮对象
+     */
+    function getMoreOrder(){
+        console.log($('body').scrollTop()); //滚动条顶部到页面顶部的距离
+        console.log($(window).height());    //浏览器可视区域的高度
+        console.log($(document).height());  //页面高度
+        if ($('body').scrollTop() + $(window).height() >= $(document).height()) {
+
+            console.log("加载更多"); //其实一般只会出现 $('body').scrollTop() + $(window).height() == $(document).height()的情况，相等的时候，代表已经滚动到页面底部
+        }
+    }
+
+    var JSBridgeUrl = 'JSBridge://className:callbackAddress/methodName?jsonObj';
+
+    // className: 表示java的类名
+    // callbackAddress： js回调的标识
+    // methodName： java中的方法名
+    // jsonObj： 接口数据
+
+
+
+    var JSBridge = {
+        call: function(className, method, params, callback){
+            var uri = 'JSBridge://' + className + ':' + callback + '/' + method + '?' + params;
+            window.prompt(uri, "");
+        }
+    }
+
+    // 下面会调用java中的 bridge.showToast方法
+    JSBridge.call('bridge','showToast',{'msg':'Hello JSBridge'},
+            function(res){alert(JSON.stringify(res))})
+
+
+    // 进入prompt回调
+    public class JSBridgeWebChromeClient extends WebChromeClient {
+        @Override
+        public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+        result.confirm(JSBridge.callJava(view, message));
+                return true;
+    }
+    }
+
+    // 调用java逻辑
+    public class JSBridge {
+    ...
+        public static String callJava(WebView webView, String uriString) {
+        String methodName = "";
+        String className = "";
+        String param = "{}";
+        String port = "";
+        if (!TextUtils.isEmpty(uriString) && uriString.startsWith("JSBridge")) {
+        Uri uri = Uri.parse(uriString);
+        className = uri.getHost();
+        param = uri.getQuery();
+        port = uri.getPort() + "";
+        String path = uri.getPath();
+        if (!TextUtils.isEmpty(path)) {
+        methodName = path.replace("/", "");
+    }
+    }
+
+    // 基于上面的className、methodName和port path调用对应类的方法
+    if (exposedMethods.containsKey(className)) {
+        HashMap<String, Method> methodHashMap = exposedMethods.get(className);
+
+        if (methodHashMap != null && methodHashMap.size() != 0 && methodHashMap.containsKey(methodName)) {
+            Method method = methodHashMap.get(methodName);
+            if (method != null) {
+                try {
+                    method.invoke(null, webView, new JSONObject(param), new Callback(webView, port));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    return null;
+    }
+    }
+
+    // 直接进入showToast函数的实现
+    public static void showToast(WebView webView, JSONObject param, final Callback callback) {
+        String message = param.optString("msg");
+        Toast.makeText(webView.getContext(), message, Toast.LENGTH_SHORT).show();
+        if (null != callback) {
+            try {
+                JSONObject object = new JSONObject();
+                object.put("key", "value");
+                object.put("key1", "value1");
+                callback.apply(getJSONObject(0, "ok", object));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // 上述程序的callback.apply方法实现如下： 即通过webView.loadUrl实现java调用js的方法
+    public class Callback {
+        private static Handler mHandler = new Handler(Looper.getMainLooper());
+        private static final String CALLBACK_JS_FORMAT = "javascript:JSBridge.onFinish('%s', %s);";
+        private String mPort;
+        private WeakReference<WebView> mWebViewRef;
+
+        public Callback(WebView view, String port) {
+        mWebViewRef = new WeakReference<>(view);
+        mPort = port;
+    }
+
+    public void apply(JSONObject jsonObject) {
+        final String execJs = String.format(CALLBACK_JS_FORMAT, mPort, String.valueOf(jsonObject));
+        if (mWebViewRef != null && mWebViewRef.get() != null) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mWebViewRef.get().loadUrl(execJs);
+                }
+            });
+
+        }
+
+    }
+    }
+
+
+
+    // Swift
+    webview.stringByEvaluatingJavaScriptFromString("Math.random()")
+    // OC
+    [webView stringByEvaluatingJavaScriptFromString:@"Math.random();"];
+
+
+
+    var JSBridgeUrl = 'JSBridge://doAction?title=分享标题&desc=分享描述&link=http%3A%2F%2Fwww.baidu.com';
+    var iframe = document.createElement('iframe');
+    iframe.style.width = '1px';
+    iframe.style.height = '1px';
+    iframe.style.display = 'none';
+    iframe.src = url;
+    document.body.appendChild(iframe);
+    setTimeout(function() {
+        iframe.remove();
+    }, 100);
+
+
+
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        print("shouldStartLoadWithRequest")
+        let url = request.URL
+        let scheme = url?.scheme
+        let method = url?.host
+        let query = url?.query
+
+        if url != nil && scheme == "jsbridge" {
+            print("scheme == \(scheme)")
+            print("method == \(method)")
+            print("query == \(query)")
+
+            switch method! {
+            case "getData":
+                self.getData()
+            case "putData":
+                self.putData()
+            case "gotoWebview":
+                self.gotoWebview()
+            case "gotoNative":
+                self.gotoNative()
+            case "doAction":
+                self.doAction()
+            case "configNative":
+                self.configNative()
+            default:
+                print("default")
+            }
+
+                return false
+            } else {
+                return true
+            }
+        }
+
+
+        JSBridge.doAction('share', {
+            title: '分享标题',
+            desc: '分享描述',
+            link: 'http://www.youzan.com',
+            imgs_url: 'http://wap.koudaitong.com/v2/common/url/create?type=homepage&index%2Findex=&kdt_id=63077&alias=63077'
+        });
+
+
+        JSContext *context = [self.webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+
+
+
+        NSString *jsStr = [NSString stringWithFormat:@"showAlert('%@')",@"这里是JS中alert弹出的message"];
+        [_webView stringByEvaluatingJavaScriptFromString:jsStr];
+
+        function asyncAlert(content) {
+            setTimeout(function(){
+                alert(content);
+            },1);
+        }
+
+        NSString *textJS = @"showAlert('这里是JS中alert弹出的message')";
+        [context evaluateScript:textJS];
+
+        - (void)webViewDidFinishLoad:(UIWebView *)webView
+        {
+            JSContext *context = [self.webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+            //定义好JS要调用的方法, share就是调用的share方法名
+            context[@"share"] = ^() {
+            NSLog(@"+++++++Begin Log+++++++");
+            NSArray *args = [JSContext currentArguments];
+
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"方式二" message:@"这是OC原生的弹出窗" delegate:self cancelButtonTitle:@"收到" otherButtonTitles:nil];
+            [alertView show];
+
+            for (JSValue *jsVal in args) {
+                NSLog(@"%@", jsVal.toString);
+            }
+
+            NSLog(@"-&#45;&#45;&#45;&#45;&#45;&#45;End Log-&#45;&#45;&#45;&#45;&#45;&#45;");
+        };
+        }
+        mWebView.loadUrl("javascript:JSBridge.onFinish(port,jsonObj);");
+        public class JavascriptInterface {
+            @JavascriptInterface
+            public void showToast(String toast) {
+            Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
+        }
+
+        webView.addJavascriptInterface(new JavascriptInterface(), "javascriptInterface");
+
+        function showToast(text){
+            window.javascriptInterface.showToast(text);
+        }
+
+        public class CustomWebViewClient extends WebViewClient {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (isJsBridgeUrl(url)) {
+            // JSbridge的处理逻辑
+                    return true;
+        }
+        return super.shouldOverrideUrlLoading(view, url);
+    }
+    }
+    }
+
+    </script>-->
+<script type="text/ecmascript-6">
+    /*邮箱验证*/
+    $('#member_reg_email').blur(function(){
+        var email = $(this).val();
+        if(email){
+            //var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+            var reg = /^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/;
+            if (!reg.test(email)) {
+                alert('您填写的邮箱格式不正确,请重新填写!');
+            }
+            else{
+                alert("正确")
+            }
+        }
+    });
+    function timeout(ms) {
+        return new Promise((resolve, reject)=>{
+            setTimeout(resolve, ms, "done");
+        });
+    }
+    timeout(1000).then((value)=>{
+        console.log(value);
+    });
+    let promise = new Promise(function(resolve, reject) {
+        console.log('Promise');
+        resolve();
+    });
+
+    promise.then(function() {
+        console.log('Resolved.');
+    });
+
+    console.log('Hi!');
+
+
+</script>
+<script>
+    var canvas1 = document.getElementById("canvas1");
+    var ctx1 = canvas1.getContext("2d");
+    ctx1.lineWidth = 10;
+    ctx1.strokeStyle = "blue";
+    ctx1.moveTo(0,0);
+    ctx1.lineTo(400,400);
+    ctx1.stroke();
+
+    /*var canvas2 = document.getElementById("canvas2");
+    var ctx2 = canvas2.getContext("2d");
+    ctx2.lineWidth = 5;
+    ctx2.strokeStyle = "red";
+    canvas2.onmousemove = function (e) {
+        ctx2.lineTo(e.clientX,e.clientY);
+        ctx2.stroke();
+    }*/
+
+    var canvas2;
+    var ctx;
+    var width;
+    var height;
+    var msg;
+    window.onload = function() {
+        canvas2 = document.getElementById("canvas2");
+        msg = document.getElementById("msg");
+        ctx = canvas2.getContext("2d");
+        width = canvas2.width;
+        height = canvas2.height;
+        ctx.fillRect(0, 0, width, height);
+        ctx.moveTo(0, 0);
+        ctx.lineTo(100, 100);
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        canvas2.onmousemove = function(e) {
+            console.log(e.clientX);
+            ctx.lineTo(e.clientX, e.clientY);
+            ctx.stroke();
+        }
+        canvas2.ontouchmove = function(e) {
+            e.preventDefault();
+            var touchE=e.targetTouches[0]
+            msg.innerHTML += touchE.clientX+"，"+touchE.clientY+ "<br/>";
+            ctx.lineTo(touchE.clientX, touchE.clientY);
+            ctx.stroke();
+        }
+        canvas2.ontouchstart = function() {
+            msg.innerHTML += "ontouchstart" + "<br/>";
+        }
+        canvas2.ontouchend = function() {
+            msg.innerHTML += "ontouchend" + "<br/>";
+        }
+    }
+</script>
+</html>
