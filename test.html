@@ -100,6 +100,30 @@
         .shengbei_body .nav_left{
             order: -1;
         }
+        .one{
+            width: 230px;
+            height: 122px;
+            border:1px solid #dcdcdc;
+            display: inline-block;
+            padding: 20px;
+            font-size:0;
+        }
+        #one{
+            margin: 0 100px 0 0;
+            vertical-align: top;
+        }
+        .one div{
+            font-size: 15px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: pink;
+            display: inline-block;
+            text-align: center;
+            line-height: 100px;
+            cursor: pointer;
+            margin:0 10px 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -168,6 +192,12 @@
 <canvas id="canvas1" width="400" height="400"></canvas>
 <canvas id="canvas2" width="600" height="400">不支持</canvas>
 <div id="msg"></div>
+
+<div id="one" class="one">
+    <div draggable="true">1</div>
+    <div draggable="true">2</div>
+</div>
+<div id="two" class="one"></div>
 </body>
 <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/tvp.player_v2_jq.js" charset='utf-8'></script>
@@ -609,5 +639,43 @@
             msg.innerHTML += "ontouchend" + "<br/>";
         }
     }
+</script>
+<script>
+    //H5原生拖拽
+
+	var temp = '';//放置被拖拽的对象
+	document.addEventListener('dragstart',function(event){
+		// 拖拽开始
+		temp = event.target;//获取触发事件的元素
+		event.target.style.opacity = '0.5';
+	},false)
+	document.addEventListener('dragend',function(event){
+		// 拖拽结束
+		event.target.style.opacity = '';
+	},false)
+	document.addEventListener('dragover',function(event){
+		//默认情况下,数据/元素不能在其他元素中被拖放，所以要防止元素的默认处理
+		if(event.target.className == 'one'){
+			event.preventDefault();
+		}
+	},false)
+	document.addEventListener('drop',function(event){
+		event.preventDefault();
+		//释放鼠标
+		event.target.appendChild( temp );
+		event.target.style.borderColor = '';
+	},false)
+	document.addEventListener('dragenter',function(event){
+		// 拖拽对象进入容器范围
+		if(event.target.className == 'one'){
+			event.target.style.borderColor = 'black';
+		}
+	},false)
+	document.addEventListener('dragleave',function(event){
+		//拖拽对象离开容器范围
+		if(event.target.className == 'one'){
+			event.target.style.borderColor = '';
+		}
+	},false)
 </script>
 </html>
